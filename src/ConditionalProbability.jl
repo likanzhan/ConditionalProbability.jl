@@ -41,7 +41,7 @@ function ProbProb(A, B, C, D)
 end
 
 """
-    CardsPlot(A, B, C, D; shuffle = true, sentence = "如果这张卡片上的图形是红色的，那么它是圆形。")
+    CardsPlot(A, B, C, D; shuffle = true, sentence = "如果卡片上的图形是红色的，那么它是圆形。")
 """
 function CardsPlot(A, B, C, D; shuffle = true, 
 	sentence = "如果卡片上的图形是红色的，那么它是圆形。"
@@ -67,9 +67,10 @@ function CardsPlot(A, B, C, D; shuffle = true,
         CubeB = RecB + RecH / 2 - CircleR
 
         poly!(
-			ax, Rect(RecL, RecB, RecW, RecH), 
+            ax, Rect(RecL, RecB, RecW, RecH), 
             strokewidth = 2, color = :gray90
 		)
+
         if     shape == :circle
             poly!(ax, Circle(CircleC, CircleR), color = color)
         elseif shape == :square
@@ -80,10 +81,10 @@ function CardsPlot(A, B, C, D; shuffle = true,
 
     fig = Figure(
 		resolution = (FigResW, FigResW * FigH / FigW), 
-		backgroundcolor = :gray99
+		backgroundcolor = :gray100
 	)
 	Label(fig[0, 1], sentence, fontsize = 25, 
-		padding = (0, 0, -30, -20), tellwidth = false)
+		padding = (0, 0, -35, -20), tellwidth = false)
     ax = Axis(fig[1, 1], 
         limits = ((-SpaceT, FigW), (-SpaceT, FigH)))
     # hidespines!(ax)
