@@ -1,6 +1,5 @@
 module ConditionalProbability
-using Reexport
-@reexport using DataFrames
+using DataFrames
 using Makie, Makie.GeometryBasics
 using Random
 using CSV
@@ -110,6 +109,7 @@ end
     ExportImages(data::AbstractDataFrame; dataDir = "Conditional_Materials")
 """
 function ExportImages(data::AbstractDataFrame; dataDir = "Conditional_Materials")
+    isdir(dataDir) || mkdir(dataDir)
     for row in eachrow(data)
         A, B, C, D = row."A⁺C⁺", row."A⁺C⁻", row."A⁻C⁺", row."A⁻C⁻"
         fig = CardsPlot(A, B, C, D)
@@ -122,6 +122,7 @@ end
 
 function ExportImages(A::a, B::b, C::c, D::d; dataDir = "Conditional_Materials")  where 
     {a <: Number, b <: Number, c <: Number, d <: Number}
+    isdir(dataDir) || mkdir(dataDir)
     fig = CardsPlot(A, B, C, D)
     save(joinpath(dataDir, "P_" * lpad(A, 2, "0") * "_" * 
     lpad(B, 2, "0") * "_" * lpad(C, 2, "0") * "_" * 
