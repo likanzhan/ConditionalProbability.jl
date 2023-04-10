@@ -1,0 +1,13 @@
+name = "ConditionalProbability"
+uuid = "9e2a59f8-a744-4773-834f-03d0224febf0"
+authors = ["Likan Zhan <zhanlikan@hotmail.com> and contributors"]
+version = "1.0.0-DEV"
+
+[compat]
+julia = "1"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
