@@ -43,7 +43,9 @@ end
 """
     CardsPlot(A, B, C, D; shuffle = true, sentence = "如果这张卡片上的图形是红色的，那么它是圆形。")
 """
-function CardsPlot(A, B, C, D; shuffle = true, sentence = "如果这张卡片上的图形是红色的，那么它是圆形。")
+function CardsPlot(A, B, C, D; shuffle = true, 
+	sentence = "如果卡片上的图形是红色的，那么它是圆形。"
+)
     
     SpaceT = 0.05
     ShiftX = 0.15
@@ -64,8 +66,10 @@ function CardsPlot(A, B, C, D; shuffle = true, sentence = "如果这张卡片上
         CubeL = RecL + RecW / 2 - CircleR
         CubeB = RecB + RecH / 2 - CircleR
 
-        poly!(ax, Rect(RecL, RecB, RecW, RecH), 
-            strokewidth = 2, color = :gray90)
+        poly!(
+			ax, Rect(RecL, RecB, RecW, RecH), 
+            strokewidth = 2, color = :gray90
+		)
         if     shape == :circle
             poly!(ax, Circle(CircleC, CircleR), color = color)
         elseif shape == :square
@@ -74,8 +78,13 @@ function CardsPlot(A, B, C, D; shuffle = true, sentence = "如果这张卡片上
         end
     end
 
-    fig = Figure(resolution = (FigResW, FigResW * FigH / FigW))
-    ax = Axis(fig[1, 1], title = sentence, 
+    fig = Figure(
+		resolution = (FigResW, FigResW * FigH / FigW), 
+		backgroundcolor = :gray99
+	)
+	Label(fig[0, 1], sentence, fontsize = 25, 
+		padding = (0, 0, -30, -20), tellwidth = false)
+    ax = Axis(fig[1, 1], 
         limits = ((-SpaceT, FigW), (-SpaceT, FigH)))
     # hidespines!(ax)
     hidedecorations!(ax)
@@ -92,17 +101,17 @@ end
 """
 function ExportCSV(data::AbstractDataFrame; dataDir = "Conditional_Materials")
     isdir(dataDir) || mkdir(dataDir)
-    transform!(data,
+    DataCSV = transform(data,
         ["A⁺C⁺", "A⁺C⁻", "A⁻C⁺", "A⁻C⁻"] => ByRow(
             (A, B, C, D) -> "P_" * lpad(A, 2, "0") * "_" * lpad(B, 2, "0") * 
             "_" * lpad(C, 2, "0") * "_" * lpad(D, 2, "0") * ".png"
         ) => "Image"
     )
-    csvdt = rename(data, Dict("A⁺C⁺" => "A1C1", "A⁺C⁻" => "A1C0", "A⁻C⁺" 
+    rename!(DataCSV, Dict("A⁺C⁺" => "A1C1", "A⁺C⁻" => "A1C0", "A⁻C⁺" 
     => "A0C1", "A⁻C⁻" => "A0C0", "A⁺" => "A1", "C⁺" => "C1", "Σ" => 
     "Total", "MI" => "MI", "C⁻|A⁺" => "C0GvA1", "C⁺|A⁺" => "C1GvA1", 
     "C⁺|A⁻" => "C1GvA0", "ΔP" => "dltP", "ΔP⁺" => "dltPp"))
-    CSV.write(joinpath(dataDir, "Conditional_Stimuli.csv"), csvdt)
+    CSV.write(joinpath(dataDir, "Conditional_Stimuli.csv"), DataCSV)
 end
 
 """
