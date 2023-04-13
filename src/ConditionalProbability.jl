@@ -118,25 +118,25 @@ end
 """
     ExportImages(data::AbstractDataFrame; dataDir = "Conditional_Materials")
 """
-function ExportImages(data::AbstractDataFrame; dataDir = "Conditional_Materials")
+function ExportImages(data::AbstractDataFrame; dataDir = "Conditional_Materials", px_per_unit = 10)
     isdir(dataDir) || mkdir(dataDir)
     for row in eachrow(data)
         A, B, C, D = row."A⁺C⁺", row."A⁺C⁻", row."A⁻C⁺", row."A⁻C⁻"
         fig = CardsPlot(A, B, C, D)
         save(joinpath(dataDir, "P_" * lpad(A, 2, "0") * "_" * 
         lpad(B, 2, "0") * "_" * lpad(C, 2, "0") * "_" * 
-        lpad(D, 2, "0") * ".png"), fig, px_per_unit = 10)
+        lpad(D, 2, "0") * ".png"), fig, px_per_unit = px_per_unit)
     end
     println(joinpath(pwd(), dataDir))
 end
 
-function ExportImages(A::a, B::b, C::c, D::d; dataDir = "Conditional_Materials")  where 
+function ExportImages(A::a, B::b, C::c, D::d; dataDir = "Conditional_Materials", px_per_unit = 10)  where 
     {a <: Number, b <: Number, c <: Number, d <: Number}
     isdir(dataDir) || mkdir(dataDir)
     fig = CardsPlot(A, B, C, D)
     save(joinpath(dataDir, "P_" * lpad(A, 2, "0") * "_" * 
     lpad(B, 2, "0") * "_" * lpad(C, 2, "0") * "_" * 
-    lpad(D, 2, "0") * ".png"), fig, px_per_unit = 10)
+    lpad(D, 2, "0") * ".png"), fig, px_per_unit = px_per_unit)
     println(joinpath(pwd(), dataDir))
 end
 
